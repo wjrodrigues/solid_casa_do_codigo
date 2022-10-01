@@ -1,6 +1,5 @@
 package cotuba.cli;
 
-import cotuba.cli.ReaderOptionsCLI;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,13 +25,15 @@ public class ReaderOptionsCLITest {
     @Test
     @Description("Instance with valid arguments")
     public void ValidArgs() {
-        var params = new String[]{"-d", "../solid-na-pratica/example_book"};
+        var exampleBookPath = new File("example_book").getAbsoluteFile().toString();
+
+        var params = new String[]{"-d", exampleBookPath};
 
         var cli = new ReaderOptionsCLI(params);
 
         assertEquals("pdf", cli.getFormat());
         assertEquals("book.pdf", cli.getOutputFile().toString());
-        assertEquals("../solid-na-pratica/example_book", cli.getMDFilesDirectory().toString());
+        assertEquals(exampleBookPath, cli.getMDFilesDirectory().toString());
         assertFalse(cli.isVerbose());
     }
 

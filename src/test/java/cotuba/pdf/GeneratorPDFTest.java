@@ -3,7 +3,6 @@ package cotuba.pdf;
 import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
 import cotuba.md.RendererMDToHTML;
-import cotuba.pdf.GeneratorPDF;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

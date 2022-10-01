@@ -1,6 +1,5 @@
 package cotuba.application;
 
-import cotuba.application.Cotuba;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
