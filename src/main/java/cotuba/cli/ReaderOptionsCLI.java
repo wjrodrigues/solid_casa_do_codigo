@@ -1,5 +1,6 @@
 package cotuba.cli;
 
+import cotuba.application.ParametersCotuba;
 import org.apache.commons.cli.*;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-class ReaderOptionsCLI {
+class ReaderOptionsCLI implements ParametersCotuba {
     private Path MDFilesDirectory;
     private String format;
     private Path outputFile;

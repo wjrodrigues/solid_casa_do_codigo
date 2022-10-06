@@ -1,5 +1,8 @@
 package cotuba.application;
 
+import cotuba.epub.GeneratorEPUBWithEpublib;
+import cotuba.md.RendererMDToHTMLWithCommonMark;
+import cotuba.pdf.GeneratorPDFWithIText;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,12 +12,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CotubaTest {
+    private GeneratorEPUB generatorEPUB = new GeneratorEPUBWithEpublib();
+    private GeneratorPDF generatorPDF = new GeneratorPDFWithIText();
+    private RendererMDToHTML rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
+
     @BeforeAll
     static void init() throws IOException {
         // Valid MD
@@ -34,12 +42,26 @@ public class CotubaTest {
     @Test
     @Description("Create pdf file based on MD files")
     public void ConvertMDToPDF() {
-        var sourceFiles = Paths.get("/tmp/valid_md");
-        var outputFile = Paths.get("/tmp/ConvertMDToPDF.pdf");
         var expectedFile = new File("/tmp/ConvertMDToPDF.pdf");
-        var cotuba = new Cotuba();
+        var cotuba = new Cotuba(generatorEPUB, generatorPDF, rendererMDToHTML);
+        ParametersCotuba params = new ParametersCotuba() {
+            @Override
+            public Path getMDFilesDirectory() {
+                return Paths.get("/tmp/valid_md");
+            }
 
-        cotuba.run("pdf", sourceFiles, outputFile);
+            @Override
+            public String getFormat() {
+                return "pdf";
+            }
+
+            @Override
+            public Path getOutputFile() {
+                return Paths.get("/tmp/ConvertMDToPDF.pdf");
+            }
+        };
+
+        cotuba.run(params);
 
         assertTrue(expectedFile.exists());
     }
@@ -47,12 +69,26 @@ public class CotubaTest {
     @Test
     @Description("Create epub file based on MD files")
     public void ConvertMDToEPUB() {
-        var sourceFiles = Paths.get("/tmp/valid_md");
-        var outputFile = Paths.get("/tmp/ConvertMDToEPUB.epub");
         var expectedFile = new File("/tmp/ConvertMDToEPUB.epub");
-        var cotuba = new Cotuba();
+        var cotuba = new Cotuba(generatorEPUB, generatorPDF, rendererMDToHTML);
+        ParametersCotuba params = new ParametersCotuba() {
+            @Override
+            public Path getMDFilesDirectory() {
+                return Paths.get("/tmp/valid_md");
+            }
 
-        cotuba.run("epub", sourceFiles, outputFile);
+            @Override
+            public String getFormat() {
+                return "epub";
+            }
+
+            @Override
+            public Path getOutputFile() {
+                return Paths.get("/tmp/ConvertMDToEPUB.epub");
+            }
+        };
+
+        cotuba.run(params);
 
         assertTrue(expectedFile.exists());
     }
@@ -60,10 +96,24 @@ public class CotubaTest {
     @Test
     @Description("Raise exception if format is not supported")
     public void UnsupportedFormat() {
-        var sourceFiles = Paths.get("/tmp/valid_md");
-        var outputFile = Paths.get("/tmp/ConvertMDToEPUB.epub");
-        var cotuba = new Cotuba();
+        var cotuba = new Cotuba(generatorEPUB, generatorPDF, rendererMDToHTML);
+        ParametersCotuba params = new ParametersCotuba() {
+            @Override
+            public Path getMDFilesDirectory() {
+                return Paths.get("/tmp/valid_md");
+            }
 
-        assertThrows(IllegalArgumentException.class, () -> cotuba.run("odt", sourceFiles, outputFile));
+            @Override
+            public String getFormat() {
+                return "odt";
+            }
+
+            @Override
+            public Path getOutputFile() {
+                return Paths.get("/tmp/ConvertMDToEPUB.epub");
+            }
+        };
+
+        assertThrows(IllegalArgumentException.class, () -> cotuba.run(params));
     }
 }

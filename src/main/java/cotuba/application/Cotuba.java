@@ -2,17 +2,28 @@ package cotuba.application;
 
 import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
-import cotuba.epub.GeneratorEPUB;
-import cotuba.md.RendererMDToHTML;
-import cotuba.pdf.GeneratorPDF;
+import org.springframework.stereotype.Component;
 
-import java.nio.file.Path;
 import java.util.List;
 
+@Component
 public class Cotuba {
-    public void run(String format, Path MDFilesDirectory, Path outputFile) {
-        var renderer = new RendererMDToHTML();
-        List<Chapter> chapters = renderer.render(MDFilesDirectory);
+    private final GeneratorEPUB generatorEPUB;
+    private final GeneratorPDF generatorPDF;
+    private final RendererMDToHTML rendererMDToHTML;
+
+    public Cotuba(GeneratorEPUB generatorEPUB, GeneratorPDF generatorPDF, RendererMDToHTML rendererMDToHTML) {
+        this.generatorEPUB = generatorEPUB;
+        this.generatorPDF = generatorPDF;
+        this.rendererMDToHTML = rendererMDToHTML;
+    }
+
+    public void run(ParametersCotuba parameters) {
+        var MDFilesDirectory = parameters.getMDFilesDirectory();
+        var format = parameters.getFormat();
+        var outputFile = parameters.getOutputFile();
+
+        List<Chapter> chapters = rendererMDToHTML.render(MDFilesDirectory);
 
         Ebook ebook = new Ebook();
         ebook.setFormat(format);
@@ -20,10 +31,8 @@ public class Cotuba {
         ebook.setChapters(chapters);
 
         if ("pdf".equals(format)) {
-            var generatorPDF = new GeneratorPDF();
             generatorPDF.generate(ebook);
         } else if ("epub".equals(format)) {
-            var generatorEPUB = new GeneratorEPUB();
             generatorEPUB.generate(ebook);
         } else {
             throw new IllegalArgumentException("Formato do ebook inválido: " + format);
