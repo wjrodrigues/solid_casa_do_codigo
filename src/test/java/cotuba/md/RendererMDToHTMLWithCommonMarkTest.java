@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RendererMDToHTMLTest {
+public class RendererMDToHTMLWithCommonMarkTest {
     @BeforeAll
     static void init() throws IOException {
         // Valid MD
@@ -34,7 +34,7 @@ public class RendererMDToHTMLTest {
     @Description("Create list with chapters")
     public void CreateListWithChapters() {
         var sourceFiles = Paths.get("/tmp/valid_md");
-        var rendererMDToHTML = new RendererMDToHTML();
+        var rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
         var resultRender = rendererMDToHTML.render(sourceFiles);
 
         assertEquals(resultRender.size(), 2);
@@ -46,7 +46,7 @@ public class RendererMDToHTMLTest {
     @Description("Raise exception if MD invalid")
     public void InvalidMDFile() {
         var sourceFiles = Paths.get("/tmp/invalid_md");
-        var rendererMDToHTML = new RendererMDToHTML();
+        var rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
 
         assertThrows(IllegalStateException.class, () -> rendererMDToHTML.render(sourceFiles));
     }
@@ -55,7 +55,7 @@ public class RendererMDToHTMLTest {
     @Description("Raise exception if MD not found")
     public void NotFoundMDFile() {
         var sourceFiles = Paths.get("/tmp/md_files");
-        var rendererMDToHTML = new RendererMDToHTML();
+        var rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
 
         assertThrows(IllegalStateException.class, () -> rendererMDToHTML.render(sourceFiles));
     }
