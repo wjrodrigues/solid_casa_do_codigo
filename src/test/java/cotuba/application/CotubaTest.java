@@ -1,8 +1,10 @@
 package cotuba.application;
 
-import cotuba.epub.GeneratorEPUBWithEpublib;
-import cotuba.md.RendererMDToHTMLWithCommonMark;
-import cotuba.pdf.GeneratorPDFWithIText;
+import cotuba.domain.EbookFormat;
+import cotuba.epub.EPUBGenerator;
+import cotuba.html.HTMLGenerator;
+import cotuba.md.RendererMDToHTML;
+import cotuba.pdf.PDFGenerator;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,14 +16,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CotubaTest {
-    private GeneratorEPUB generatorEPUB = new GeneratorEPUBWithEpublib();
-    private GeneratorPDF generatorPDF = new GeneratorPDFWithIText();
-    private RendererMDToHTML rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
+    private EPUBGenerator generatorEPUB = new EPUBGenerator();
+    private PDFGenerator generatorPDF = new PDFGenerator();
+    private RendererMDToHTML rendererMDToHTML = new RendererMDToHTML();
 
     @BeforeAll
     static void init() throws IOException {
@@ -43,7 +45,9 @@ public class CotubaTest {
     @Description("Create pdf file based on MD files")
     public void ConvertMDToPDF() {
         var expectedFile = new File("/tmp/ConvertMDToPDF.pdf");
-        var cotuba = new Cotuba(generatorEPUB, generatorPDF, rendererMDToHTML);
+        List<EbookGenerator> ebookGenerators = List.of(new PDFGenerator[]{new PDFGenerator()});
+        var cotuba = new Cotuba(ebookGenerators, new RendererMDToHTML());
+
         ParametersCotuba params = new ParametersCotuba() {
             @Override
             public Path getMDFilesDirectory() {
@@ -51,8 +55,8 @@ public class CotubaTest {
             }
 
             @Override
-            public String getFormat() {
-                return "pdf";
+            public EbookFormat getFormat() {
+                return EbookFormat.PDF;
             }
 
             @Override
@@ -70,7 +74,9 @@ public class CotubaTest {
     @Description("Create epub file based on MD files")
     public void ConvertMDToEPUB() {
         var expectedFile = new File("/tmp/ConvertMDToEPUB.epub");
-        var cotuba = new Cotuba(generatorEPUB, generatorPDF, rendererMDToHTML);
+        List<EbookGenerator> ebookGenerators = List.of(new EPUBGenerator[]{new EPUBGenerator()});
+        var cotuba = new Cotuba(ebookGenerators, new RendererMDToHTML());
+
         ParametersCotuba params = new ParametersCotuba() {
             @Override
             public Path getMDFilesDirectory() {
@@ -78,8 +84,8 @@ public class CotubaTest {
             }
 
             @Override
-            public String getFormat() {
-                return "epub";
+            public EbookFormat getFormat() {
+                return EbookFormat.EPUB;
             }
 
             @Override
@@ -93,10 +99,14 @@ public class CotubaTest {
         assertTrue(expectedFile.exists());
     }
 
+
     @Test
-    @Description("Raise exception if format is not supported")
-    public void UnsupportedFormat() {
-        var cotuba = new Cotuba(generatorEPUB, generatorPDF, rendererMDToHTML);
+    @Description("Creates HTML file based on MD files")
+    public void ConvertMDToHTML() {
+        var expectedFile = new File("/tmp/1_titleepubblah.html");
+        List<EbookGenerator> ebookGenerators = List.of(new HTMLGenerator[]{new HTMLGenerator()});
+        var cotuba = new Cotuba(ebookGenerators, new RendererMDToHTML());
+
         ParametersCotuba params = new ParametersCotuba() {
             @Override
             public Path getMDFilesDirectory() {
@@ -104,16 +114,18 @@ public class CotubaTest {
             }
 
             @Override
-            public String getFormat() {
-                return "odt";
+            public EbookFormat getFormat() {
+                return EbookFormat.HTML;
             }
 
             @Override
             public Path getOutputFile() {
-                return Paths.get("/tmp/ConvertMDToEPUB.epub");
+                return Paths.get("/tmp/");
             }
         };
 
-        assertThrows(IllegalArgumentException.class, () -> cotuba.run(params));
+        cotuba.run(params);
+
+        assertTrue(expectedFile.exists());
     }
 }

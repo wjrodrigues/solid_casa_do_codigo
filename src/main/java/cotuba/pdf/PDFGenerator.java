@@ -8,9 +8,10 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.property.AreaBreakType;
-import cotuba.application.GeneratorPDF;
+import cotuba.application.EbookGenerator;
 import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
+import cotuba.domain.EbookFormat;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
@@ -18,7 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @Component
-public class GeneratorPDFWithIText implements GeneratorPDF {
+public class PDFGenerator implements EbookGenerator {
     @Override
     public void generate(Ebook ebook) {
         Path outputFile = ebook.getOutputFile();
@@ -42,4 +43,8 @@ public class GeneratorPDFWithIText implements GeneratorPDF {
         }
     }
 
+    @Override
+    public boolean accept(EbookFormat format) {
+        return EbookFormat.PDF.equals(format);
+    }
 }

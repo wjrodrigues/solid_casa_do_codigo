@@ -1,6 +1,5 @@
 package cotuba.md;
 
-import cotuba.application.RendererMDToHTML;
 import cotuba.domain.Chapter;
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.Heading;
@@ -18,8 +17,7 @@ import java.nio.file.PathMatcher;
 import java.util.List;
 
 @Component
-public class RendererMDToHTMLWithCommonMark implements RendererMDToHTML {
-    @Override
+public class RendererMDToHTML {
     public List<Chapter> render(Path pathMD) {
         return GetMDFiles(pathMD).stream().map(MDFile -> {
             Chapter chapter = new Chapter();

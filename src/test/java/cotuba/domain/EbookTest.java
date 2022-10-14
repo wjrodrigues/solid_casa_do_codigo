@@ -19,11 +19,11 @@ public class EbookTest {
         chapters.add(new Chapter());
 
         ebook.setChapters(chapters);
-        ebook.setFormat("PDF");
+        ebook.setFormat(EbookFormat.PDF);
         ebook.setOutputFile(pathOf);
 
         assertEquals(ebook.getChapters(), chapters);
-        assertEquals(ebook.getFormat(), "PDF");
+        assertEquals(ebook.getFormat(), EbookFormat.PDF);
         assertEquals(ebook.getOutputFile(), pathOf);
     }
 }

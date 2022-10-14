@@ -1,11 +1,13 @@
 package cotuba.application;
 
+import cotuba.domain.EbookFormat;
+
 import java.nio.file.Path;
 
 public interface ParametersCotuba {
     Path getMDFilesDirectory();
 
-    String getFormat();
+    EbookFormat getFormat();
 
     Path getOutputFile();
 }
