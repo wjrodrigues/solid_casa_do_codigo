@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HTMLGeneratorTest {
     @BeforeAll
     static void init() throws IOException {
-        new File("/tmp/valid_md").mkdirs();
-        var fileWriter = new FileWriter("/tmp/valid_md/file_html_test.md");
+        new File("/tmp/valid_html_md/").mkdirs();
+        var fileWriter = new FileWriter("/tmp/valid_html_md/file_html_test.md");
         fileWriter.write("# Title HTML");
         fileWriter.write("## Blah");
         fileWriter.close();
@@ -30,7 +30,7 @@ public class HTMLGeneratorTest {
     @Test
     @Description("Create HTML based on MD's files")
     public void ConvertMDToHTML() {
-        var sourceFiles = Paths.get("/tmp/valid_md");
+        var sourceFiles = Paths.get("/tmp/valid_html_md/");
         var outputFile = Paths.get("/tmp/");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
         var ebook = new Ebook();
@@ -38,7 +38,7 @@ public class HTMLGeneratorTest {
         ebook.setFormat(EbookFormat.HTML);
         ebook.setOutputFile(outputFile);
         var generator = new HTMLGenerator();
-        var expectedFile = new File("/tmp/1_titleepubblah.html");
+        var expectedFile = new File("/tmp/1_titlehtmlblah.html");
 
         generator.generate(ebook);
 
@@ -48,7 +48,7 @@ public class HTMLGeneratorTest {
     @Test
     @Description("Raise exception if destination is not valid")
     public void InvalidOutputFile() {
-        var sourceFiles = Paths.get("/tmp/valid_md");
+        var sourceFiles = Paths.get("/tmp/valid_html_md/");
         var outputFile = Paths.get("/sys/block/loop0/test");
 
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
