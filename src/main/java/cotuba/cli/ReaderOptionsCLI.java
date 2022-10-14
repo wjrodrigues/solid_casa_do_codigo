@@ -1,6 +1,7 @@
 package cotuba.cli;
 
 import cotuba.application.ParametersCotuba;
+import cotuba.domain.EbookFormat;
 import org.apache.commons.cli.*;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.util.Comparator;
 
 class ReaderOptionsCLI implements ParametersCotuba {
     private Path MDFilesDirectory;
-    private String format;
+    private EbookFormat format;
     private Path outputFile;
     private boolean verbose = false;
 
@@ -20,7 +21,8 @@ class ReaderOptionsCLI implements ParametersCotuba {
         return MDFilesDirectory;
     }
 
-    public String getFormat() {
+    @Override
+    public EbookFormat getFormat() {
         return format;
     }
 
@@ -91,13 +93,10 @@ class ReaderOptionsCLI implements ParametersCotuba {
     }
 
     private void DefineFormat(CommandLine cmd) {
-        String ebookFormat = cmd.getOptionValue("format");
+        String txtFormat = cmd.getOptionValue("format");
+        if (txtFormat == null) txtFormat = "pdf";
 
-        if (ebookFormat != null) {
-            format = ebookFormat.toLowerCase();
-        } else {
-            format = "pdf";
-        }
+        format = EbookFormat.valueOf(txtFormat.toUpperCase());
     }
 
     private void DefineOutputFile(CommandLine cmd) {
@@ -107,7 +106,7 @@ class ReaderOptionsCLI implements ParametersCotuba {
             if (nameOutputFileEbook != null) {
                 outputFile = Paths.get(nameOutputFileEbook);
             } else {
-                outputFile = Paths.get("book." + format.toLowerCase());
+                outputFile = Paths.get("book." + format.name().toLowerCase());
             }
 
             if (Files.isDirectory(outputFile)) {

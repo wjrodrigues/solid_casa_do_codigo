@@ -3,6 +3,7 @@ package cotuba.epub;
 import cotuba.application.EbookGenerator;
 import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
+import cotuba.domain.EbookFormat;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubWriter;
@@ -14,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
-public class GeneratorEPUBWithEpublib implements EbookGenerator {
+public class EPUBGenerator implements EbookGenerator {
     @Override
     public void generate(Ebook ebook) {
         var epub = new Book();
@@ -33,5 +34,10 @@ public class GeneratorEPUBWithEpublib implements EbookGenerator {
         } catch (IOException ex) {
             throw new IllegalStateException("Erro ao criar arquivo EPUB: " + outputFile.toAbsolutePath(), ex);
         }
+    }
+
+    @Override
+    public boolean accept(EbookFormat format) {
+        return EbookFormat.EPUB.equals(format);
     }
 }

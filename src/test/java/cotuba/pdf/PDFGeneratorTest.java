@@ -2,7 +2,8 @@ package cotuba.pdf;
 
 import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
-import cotuba.md.RendererMDToHTMLWithCommonMark;
+import cotuba.domain.EbookFormat;
+import cotuba.md.RendererMDToHTML;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GeneratorPDFWithITextTest {
+public class PDFGeneratorTest {
     @BeforeAll
     static void init() throws IOException {
         new File("/tmp/valid_md").mkdirs();
@@ -31,12 +32,12 @@ public class GeneratorPDFWithITextTest {
     public void ConvertMDToPDF() {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/file_test.pdf");
-        var chapters = (new RendererMDToHTMLWithCommonMark()).render(sourceFiles);
+        var chapters = (new RendererMDToHTML()).render(sourceFiles);
         var ebook = new Ebook();
         ebook.setChapters(chapters);
-        ebook.setFormat("pdf");
+        ebook.setFormat(EbookFormat.PDF);
         ebook.setOutputFile(outputFile);
-        var GeneratorPDF = new GeneratorPDFWithIText();
+        var GeneratorPDF = new PDFGenerator();
         var expectedFile = new File("/tmp/file_test.pdf");
 
         GeneratorPDF.generate(ebook);
@@ -49,12 +50,12 @@ public class GeneratorPDFWithITextTest {
     public void InvalidOutputFile() {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/");
-        var chapters = (new RendererMDToHTMLWithCommonMark()).render(sourceFiles);
+        var chapters = (new RendererMDToHTML()).render(sourceFiles);
         var ebook = new Ebook();
         ebook.setChapters(chapters);
-        ebook.setFormat("pdf");
+        ebook.setFormat(EbookFormat.PDF);
         ebook.setOutputFile(outputFile);
-        var generatorPDF = new GeneratorPDFWithIText();
+        var generatorPDF = new PDFGenerator();
 
         assertThrows(IllegalStateException.class, () -> generatorPDF.generate(ebook));
     }
@@ -64,7 +65,7 @@ public class GeneratorPDFWithITextTest {
     public void InvalidEbook() {
         var ebook = new Ebook();
         ebook.setChapters(List.of(new Chapter()));
-        var generatorPDF = new GeneratorPDFWithIText();
+        var generatorPDF = new PDFGenerator();
 
         assertThrows(NullPointerException.class, () -> generatorPDF.generate(ebook));
     }

@@ -1,20 +1,18 @@
 package cotuba.domain;
 
-import cotuba.domain.Chapter;
-
 import java.nio.file.Path;
 import java.util.List;
 
 public class Ebook {
-    private String format;
+    private EbookFormat format;
     private Path outputFile;
     private List<Chapter> chapters;
 
-    public String getFormat() {
+    public EbookFormat getFormat() {
         return format;
     }
 
-    public void setFormat(String format) {
+    public void setFormat(EbookFormat format) {
         this.format = format;
     }
 
@@ -35,6 +33,6 @@ public class Ebook {
     }
 
     public boolean isLastChapter(Chapter chapter) {
-        return this.chapters.get(this.chapters.size() -1).equals(chapter);
+        return this.chapters.get(this.chapters.size() - 1).equals(chapter);
     }
 }

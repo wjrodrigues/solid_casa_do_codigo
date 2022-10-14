@@ -1,8 +1,5 @@
-package domain;
+package cotuba.domain;
 
-import cotuba.domain.Chapter;
-import cotuba.domain.Ebook;
-import cotuba.domain.EbookFormat;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,5 @@
-package domain;
+package cotuba.domain;
 
-import cotuba.domain.Chapter;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 

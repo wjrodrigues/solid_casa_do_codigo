@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RendererMDToHTMLWithCommonMarkTest {
+public class RendererMDToHTMLTest {
     @BeforeAll
     static void init() throws IOException {
         // Valid MD
@@ -34,10 +34,10 @@ public class RendererMDToHTMLWithCommonMarkTest {
     @Description("Create list with chapters")
     public void CreateListWithChapters() {
         var sourceFiles = Paths.get("/tmp/valid_md");
-        var rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
+        var rendererMDToHTML = new RendererMDToHTML();
         var resultRender = rendererMDToHTML.render(sourceFiles);
 
-        assertEquals(resultRender.size(), 2);
+        assertEquals(resultRender.size(), 3);
         assertNotNull(resultRender.get(0).getTitle());
         assertNotNull(resultRender.get(0).getHTMLContent());
     }
@@ -46,7 +46,7 @@ public class RendererMDToHTMLWithCommonMarkTest {
     @Description("Raise exception if MD invalid")
     public void InvalidMDFile() {
         var sourceFiles = Paths.get("/tmp/invalid_md");
-        var rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
+        var rendererMDToHTML = new RendererMDToHTML();
 
         assertThrows(IllegalStateException.class, () -> rendererMDToHTML.render(sourceFiles));
     }
@@ -55,7 +55,7 @@ public class RendererMDToHTMLWithCommonMarkTest {
     @Description("Raise exception if MD not found")
     public void NotFoundMDFile() {
         var sourceFiles = Paths.get("/tmp/md_files");
-        var rendererMDToHTML = new RendererMDToHTMLWithCommonMark();
+        var rendererMDToHTML = new RendererMDToHTML();
 
         assertThrows(IllegalStateException.class, () -> rendererMDToHTML.render(sourceFiles));
     }

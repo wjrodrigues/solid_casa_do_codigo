@@ -1,5 +1,6 @@
 package cotuba.cli;
 
+import cotuba.domain.EbookFormat;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class ReaderOptionsCLITest {
 
         var cli = new ReaderOptionsCLI(params);
 
-        assertEquals("pdf", cli.getFormat());
+        assertEquals(EbookFormat.PDF, cli.getFormat());
         assertEquals("book.pdf", cli.getOutputFile().toString());
         assertEquals(exampleBookPath, cli.getMDFilesDirectory().toString());
         assertFalse(cli.isVerbose());
@@ -51,7 +52,7 @@ public class ReaderOptionsCLITest {
         var params = new String[]{"-d", "/tmp/valid_md/", "-f", "epub"};
         var cli = new ReaderOptionsCLI(params);
 
-        assertEquals("epub", cli.getFormat());
+        assertEquals(EbookFormat.EPUB, cli.getFormat());
         assertEquals("book.epub", cli.getOutputFile().toString());
         assertFalse(cli.isVerbose());
     }
