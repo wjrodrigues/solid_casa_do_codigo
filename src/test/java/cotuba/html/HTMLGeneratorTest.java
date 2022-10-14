@@ -31,14 +31,14 @@ public class HTMLGeneratorTest {
     @Description("Create HTML based on MD's files")
     public void ConvertMDToHTML() {
         var sourceFiles = Paths.get("/tmp/valid_md");
-        var outputFile = Paths.get("/tmp/file_html_test");
+        var outputFile = Paths.get("/tmp/");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
         var ebook = new Ebook();
         ebook.setChapters(chapters);
         ebook.setFormat(EbookFormat.HTML);
         ebook.setOutputFile(outputFile);
         var generator = new HTMLGenerator();
-        var expectedFile = new File("/tmp/file_html_test/1_titleepubblah.html");
+        var expectedFile = new File("/tmp/1_titleepubblah.html");
 
         generator.generate(ebook);
 
