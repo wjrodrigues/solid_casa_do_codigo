@@ -19,11 +19,11 @@ public class EPUBGenerator implements EbookGenerator {
     @Override
     public void generate(Ebook ebook) {
         var epub = new Book();
-        Path outputFile = ebook.getOutputFile();
+        Path outputFile = ebook.outputFile();
 
-        for (Chapter chapter : ebook.getChapters()) {
-            String html = chapter.getHTMLContent();
-            String title = chapter.getTitle();
+        for (Chapter chapter : ebook.chapters()) {
+            String html = chapter.HTMLContent();
+            String title = chapter.title();
 
             epub.addSection(title, new Resource(html.getBytes(), MediatypeService.XHTML));
         }

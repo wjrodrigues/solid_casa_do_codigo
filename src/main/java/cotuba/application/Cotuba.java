@@ -26,10 +26,7 @@ public class Cotuba {
 
         List<Chapter> chapters = rendererMDToHTML.render(MDFilesDirectory);
 
-        Ebook ebook = new Ebook();
-        ebook.setFormat(format);
-        ebook.setOutputFile(outputFile);
-        ebook.setChapters(chapters);
+        Ebook ebook = new Ebook(format, outputFile, chapters);
 
         ebookGenerator.generate(ebook);
     }

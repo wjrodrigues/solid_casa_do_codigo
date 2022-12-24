@@ -33,10 +33,7 @@ public class EPUBGeneratorTest {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/file_test.epub");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook();
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.EPUB);
-        ebook.setOutputFile(outputFile);
+        var ebook = new Ebook(EbookFormat.EPUB, outputFile, chapters);
         var generatorEPUB = new EPUBGenerator();
         var expectedFile = new File("/tmp/file_test.epub");
 
@@ -51,22 +48,9 @@ public class EPUBGeneratorTest {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook();
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.EPUB);
-        ebook.setOutputFile(outputFile);
+        var ebook = new Ebook(EbookFormat.EPUB, outputFile, chapters);
         var generatorEPUB = new EPUBGenerator();
 
         assertThrows(IllegalStateException.class, () -> generatorEPUB.generate(ebook));
-    }
-
-    @Test
-    @Description("Raise exception if book is not valid")
-    public void InvalidEbook() {
-        var ebook = new Ebook();
-        ebook.setChapters(List.of(new Chapter()));
-        var generatorEPUB = new EPUBGenerator();
-
-        assertThrows(NullPointerException.class, () -> generatorEPUB.generate(ebook));
     }
 }

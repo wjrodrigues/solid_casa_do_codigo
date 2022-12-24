@@ -14,16 +14,12 @@ public class EbookTest {
     @Description("Validate methods")
     public void methods() {
         Path pathOf = Path.of("");
-        Ebook ebook = new Ebook();
         List<Chapter> chapters = new ArrayList<>();
-        chapters.add(new Chapter());
+        chapters.add(new Chapter("Methods", "<b></b>"));
+        Ebook ebook = new Ebook(EbookFormat.PDF, pathOf, chapters);
 
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.PDF);
-        ebook.setOutputFile(pathOf);
-
-        assertEquals(ebook.getChapters(), chapters);
-        assertEquals(ebook.getFormat(), EbookFormat.PDF);
-        assertEquals(ebook.getOutputFile(), pathOf);
+        assertEquals(ebook.chapters(), chapters);
+        assertEquals(ebook.format(), EbookFormat.PDF);
+        assertEquals(ebook.outputFile(), pathOf);
     }
 }
