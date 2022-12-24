@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,10 +32,7 @@ public class PDFGeneratorTest {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/file_test.pdf");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook();
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.PDF);
-        ebook.setOutputFile(outputFile);
+        var ebook = new Ebook(EbookFormat.PDF, outputFile, chapters);
         var GeneratorPDF = new PDFGenerator();
         var expectedFile = new File("/tmp/file_test.pdf");
 
@@ -51,22 +47,9 @@ public class PDFGeneratorTest {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook();
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.PDF);
-        ebook.setOutputFile(outputFile);
+        var ebook = new Ebook(EbookFormat.PDF, outputFile, chapters);
         var generatorPDF = new PDFGenerator();
 
         assertThrows(IllegalStateException.class, () -> generatorPDF.generate(ebook));
-    }
-
-    @Test
-    @Description("Raise exception if book is not valid")
-    public void InvalidEbook() {
-        var ebook = new Ebook();
-        ebook.setChapters(List.of(new Chapter()));
-        var generatorPDF = new PDFGenerator();
-
-        assertThrows(NullPointerException.class, () -> generatorPDF.generate(ebook));
     }
 }

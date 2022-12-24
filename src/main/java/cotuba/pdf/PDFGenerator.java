@@ -22,11 +22,11 @@ import java.util.List;
 public class PDFGenerator implements EbookGenerator {
     @Override
     public void generate(Ebook ebook) {
-        Path outputFile = ebook.getOutputFile();
+        Path outputFile = ebook.outputFile();
 
         try (var writer = new PdfWriter(Files.newOutputStream(outputFile)); var pdf = new PdfDocument(writer); var pdfDocument = new Document(pdf)) {
-            for (Chapter chapter : ebook.getChapters()) {
-                String html = chapter.getHTMLContent();
+            for (Chapter chapter : ebook.chapters()) {
+                String html = chapter.HTMLContent();
 
                 List<IElement> convertToElements = HtmlConverter.convertToElements(html);
 
@@ -34,7 +34,7 @@ public class PDFGenerator implements EbookGenerator {
                     pdfDocument.add((IBlockElement) element);
                 }
 
-                if (!ebook.isLastChapter(chapter)) {
+                if (!ebook.lastChapter(chapter)) {
                     pdfDocument.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
                 }
             }

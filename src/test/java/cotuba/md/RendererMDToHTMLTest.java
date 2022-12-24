@@ -38,8 +38,8 @@ public class RendererMDToHTMLTest {
         var resultRender = rendererMDToHTML.render(sourceFiles);
 
         assertEquals(resultRender.size(), 2);
-        assertNotNull(resultRender.get(0).getTitle());
-        assertNotNull(resultRender.get(0).getHTMLContent());
+        assertNotNull(resultRender.get(0).title());
+        assertNotNull(resultRender.get(0).HTMLContent());
     }
 
     @Test

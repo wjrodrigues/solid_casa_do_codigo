@@ -1,6 +1,7 @@
 package cotuba.md;
 
 import cotuba.domain.Chapter;
+import cotuba.domain.builder.ChapterBuilder;
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.Heading;
 import org.commonmark.node.Node;
@@ -20,11 +21,11 @@ import java.util.List;
 public class RendererMDToHTML {
     public List<Chapter> render(Path pathMD) {
         return GetMDFiles(pathMD).stream().map(MDFile -> {
-            Chapter chapter = new Chapter();
-            Node document = parserMD(MDFile, chapter);
-            parserHTML(MDFile, chapter, document);
+            ChapterBuilder chapterBuilder = new ChapterBuilder();
+            Node document = parserMD(MDFile, chapterBuilder);
+            parserHTML(MDFile, chapterBuilder, document);
 
-            return chapter;
+            return chapterBuilder.build();
         }).toList();
     }
 
@@ -38,7 +39,7 @@ public class RendererMDToHTML {
         }
     }
 
-    private Node parserMD(Path pathMD, Chapter chapter) {
+    private Node parserMD(Path pathMD, ChapterBuilder chapterBuilder) {
         Parser parser = Parser.builder().build();
         Node document;
 
@@ -48,8 +49,8 @@ public class RendererMDToHTML {
                 @Override
                 public void visit(Heading heading) {
                     if (heading.getLevel() >= 1 || heading.getLevel() <= 6) {
-                        String tituloDoCapitulo = ((Text) heading.getFirstChild()).getLiteral();
-                        chapter.setTitle(tituloDoCapitulo);
+                        String titleChapter = ((Text) heading.getFirstChild()).getLiteral();
+                        chapterBuilder.withTitle(titleChapter);
                     }
                 }
             });
@@ -60,12 +61,12 @@ public class RendererMDToHTML {
         return document;
     }
 
-    private void parserHTML(Path pathMD, Chapter chapter, Node document) {
+    private void parserHTML(Path pathMD, ChapterBuilder chapterBuilder, Node document) {
         try {
             HtmlRenderer renderer = HtmlRenderer.builder().build();
             String html = renderer.render(document);
 
-            chapter.setHTMLContent(html);
+            chapterBuilder.witHTMLContent(html);
         } catch (Exception ex) {
             throw new IllegalStateException("Erro ao renderizar para HTML o arquivo " + pathMD, ex);
         }

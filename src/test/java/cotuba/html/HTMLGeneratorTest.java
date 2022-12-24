@@ -33,10 +33,7 @@ public class HTMLGeneratorTest {
         var sourceFiles = Paths.get("/tmp/valid_html_md/");
         var outputFile = Paths.get("/tmp/");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook();
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.HTML);
-        ebook.setOutputFile(outputFile);
+        var ebook = new Ebook(EbookFormat.HTML, outputFile, chapters);
         var generator = new HTMLGenerator();
         var expectedFile = new File("/tmp/1_titlehtmlblah.html");
 
@@ -52,22 +49,9 @@ public class HTMLGeneratorTest {
         var outputFile = Paths.get("/sys/block/loop0/test");
 
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook();
-        ebook.setChapters(chapters);
-        ebook.setFormat(EbookFormat.HTML);
-        ebook.setOutputFile(outputFile);
+        var ebook = new Ebook(EbookFormat.HTML, outputFile, chapters);
         var generator = new HTMLGenerator();
 
         assertThrows(IllegalArgumentException.class, () -> generator.generate(ebook));
-    }
-
-    @Test
-    @Description("Raise exception if book is not valid")
-    public void InvalidEbook() {
-        var ebook = new Ebook();
-        ebook.setChapters(List.of(new Chapter()));
-        var generator = new HTMLGenerator();
-
-        assertThrows(NullPointerException.class, () -> generator.generate(ebook));
     }
 }

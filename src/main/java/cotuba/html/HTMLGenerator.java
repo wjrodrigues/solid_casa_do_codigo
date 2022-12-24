@@ -14,7 +14,7 @@ import java.text.Normalizer;
 public class HTMLGenerator implements EbookGenerator {
     @Override
     public void generate(Ebook ebook) {
-        Path outputFile = ebook.getOutputFile();
+        Path outputFile = ebook.outputFile();
 
         try {
             Path HTMLDirectory;
@@ -26,7 +26,7 @@ public class HTMLGenerator implements EbookGenerator {
 
             int i = 1;
 
-            for (Chapter chapter : ebook.getChapters()) {
+            for (Chapter chapter : ebook.chapters()) {
                 String fileNameHTMLChapter = getFileNameHTMLOfChapter(i, chapter);
                 Path fileHTMLOfChapter = HTMLDirectory.resolve(fileNameHTMLChapter);
                 String html = """
@@ -38,7 +38,7 @@ public class HTMLGenerator implements EbookGenerator {
                             </head>
                             <body>%s</body>
                         </html>
-                        """.formatted(chapter.getTitle(), chapter.getHTMLContent());
+                        """.formatted(chapter.title(), chapter.HTMLContent());
                 Files.writeString(fileHTMLOfChapter, html, StandardCharsets.UTF_8);
                 i++;
             }
@@ -48,7 +48,7 @@ public class HTMLGenerator implements EbookGenerator {
     }
 
     private String getFileNameHTMLOfChapter(int i, Chapter chapter) {
-        String withoutAccent = removeAccent(chapter.getTitle().toLowerCase());
+        String withoutAccent = removeAccent(chapter.title().toLowerCase());
         String fileNameHTMLChapter = i + "_" + withoutAccent.replaceAll("[^\\w]", "") + ".html";
 
         return fileNameHTMLChapter;
