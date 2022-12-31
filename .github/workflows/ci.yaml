@@ -16,4 +16,4 @@ jobs:
         run: docker-compose -f docker/docker-compose.yml up -d
 
       - name: Run tests
-        run: docker exec app sh -c "cd /app && mvn clean verify"
+        run: docker exec app sh -c "cd /app/cotuba && mvn clean verify"
