@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run docker
         run: docker-compose -f docker/docker-compose.yml up -d
 
       - name: Run tests
-        run: docker exec app sh -c "cd /app && mvn clean verify"
+        run: docker exec app sh -c "cd /app/cotuba && mvn clean verify"

@@ -24,7 +24,7 @@ public class MainTest {
     @Test
     @Description("returns message from PDF created successfully")
     public void ReturnsMessageCreatedPDF() {
-        var exampleBookPath = new File("example_book").getAbsoluteFile().toString();
+        var exampleBookPath = new File("../example_book").getAbsoluteFile().toString();
 
         Main.main(new String[]{"-d", exampleBookPath, "-o", "/tmp/ReturnsMessageCreatedPDF.pdf"});
 
@@ -34,7 +34,7 @@ public class MainTest {
     @Test
     @Description("creates PDF file")
     public void CreatesPDF() {
-        var exampleBookPath = new File("example_book").getAbsoluteFile().toString();
+        var exampleBookPath = new File("../example_book").getAbsoluteFile().toString();
         var expectedFile = new File("/tmp/CreatesPDF.pdf");
 
         Main.main(new String[]{"-d", exampleBookPath, "-o", "/tmp/CreatesPDF.pdf"});

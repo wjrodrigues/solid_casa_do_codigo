@@ -1,6 +1,5 @@
-package cotuba.pdf;
+package cotuba.epub;
 
-import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
 import cotuba.domain.EbookFormat;
 import cotuba.md.RendererMDToHTML;
@@ -16,27 +15,27 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PDFGeneratorTest {
+public class EPUBGeneratorTest {
     @BeforeAll
     static void init() throws IOException {
         new File("/tmp/valid_md").mkdirs();
         var fileWriter = new FileWriter("/tmp/valid_md/file_test.md");
-        fileWriter.write("# Title PDF");
+        fileWriter.write("# Title EPUB");
         fileWriter.write("## Blah");
         fileWriter.close();
     }
 
     @Test
-    @Description("Create PDF based on MD's files")
-    public void ConvertMDToPDF() {
+    @Description("Create EPUB based on MD's files")
+    public void ConvertMDToEPUB() {
         var sourceFiles = Paths.get("/tmp/valid_md");
-        var outputFile = Paths.get("/tmp/file_test.pdf");
+        var outputFile = Paths.get("/tmp/file_test.epub");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook(EbookFormat.PDF, outputFile, chapters);
-        var GeneratorPDF = new PDFGenerator();
-        var expectedFile = new File("/tmp/file_test.pdf");
+        var ebook = new Ebook(EbookFormat.EPUB, outputFile, chapters);
+        var generatorEPUB = new EPUBGenerator();
+        var expectedFile = new File("/tmp/file_test.epub");
 
-        GeneratorPDF.generate(ebook);
+        generatorEPUB.generate(ebook);
 
         assertTrue(expectedFile.exists());
     }
@@ -47,9 +46,9 @@ public class PDFGeneratorTest {
         var sourceFiles = Paths.get("/tmp/valid_md");
         var outputFile = Paths.get("/tmp/");
         var chapters = (new RendererMDToHTML()).render(sourceFiles);
-        var ebook = new Ebook(EbookFormat.PDF, outputFile, chapters);
-        var generatorPDF = new PDFGenerator();
+        var ebook = new Ebook(EbookFormat.EPUB, outputFile, chapters);
+        var generatorEPUB = new EPUBGenerator();
 
-        assertThrows(IllegalStateException.class, () -> generatorPDF.generate(ebook));
+        assertThrows(IllegalStateException.class, () -> generatorEPUB.generate(ebook));
     }
 }

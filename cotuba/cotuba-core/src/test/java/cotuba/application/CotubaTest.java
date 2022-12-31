@@ -103,7 +103,7 @@ public class CotubaTest {
     @Test
     @Description("Creates HTML file based on MD files")
     public void ConvertMDToHTML() {
-        var expectedFile = new File("/tmp/1_titleepubblah.html");
+        var expectedFile = new File("/tmp/1_titlerendermdtohtmlblah.html");
         List<EbookGenerator> ebookGenerators = List.of(new HTMLGenerator[]{new HTMLGenerator()});
         var cotuba = new Cotuba(ebookGenerators, new RendererMDToHTML());
 

@@ -1,6 +1,5 @@
 package cotuba.html;
 
-import cotuba.domain.Chapter;
 import cotuba.domain.Ebook;
 import cotuba.domain.EbookFormat;
 import cotuba.md.RendererMDToHTML;
@@ -12,7 +11,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -26,7 +26,7 @@ public class ReaderOptionsCLITest {
     @Test
     @Description("Instance with valid arguments")
     public void ValidArgs() {
-        var exampleBookPath = new File("example_book").getAbsoluteFile().toString();
+        var exampleBookPath = new File("../example_book").getAbsoluteFile().toString();
 
         var params = new String[]{"-d", exampleBookPath};
 
